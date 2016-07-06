@@ -25,16 +25,21 @@ url = 'https://stream.twitter.com/1.1/statuses/sample.json'
 request = oauth.Request.from_consumer_and_token(consumer, token, http_url=url)
 request.sign_request(oauth.SignatureMethod_HMAC_SHA1(), consumer, token)
 res = urllib2.urlopen(request.to_url())
- 
+
+
 for r in res:
     data = json.loads(r)
  
     try:
         #日本語のツイートだけ表示
         if data['user']['lang'] == 'ja':
-            print data['user']['screen_name']
-            print data['text']
-            print
+            if data['entities']['media'][0] is None:
+                pass
+            else:
+                #print data['user']['screen_name']
+                #print data['text']
+                print data['entities']['media'][0]['media_url_https']
+                print
  
     except:
         #たまーにデリートフラグのついたツイートが流れてくるので（？）適当に受け流す 詳しくは未調査
