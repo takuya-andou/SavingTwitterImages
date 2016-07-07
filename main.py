@@ -3,6 +3,16 @@
  
 import json, urllib2, oauth2 as oauth
 import ConfigParser
+import pymongo
+
+# mongodb へのアクセスを確立
+client = pymongo.MongoClient('localhost', 27017)
+
+# データベースを作成 (名前: my_database)
+db = client.my_database
+
+# コレクションを作成 (名前: my_collection)
+co = db.my_collection
 
 inifile = ConfigParser.SafeConfigParser()
 inifile.read("./config.ini")
@@ -40,6 +50,8 @@ for r in res:
                 print data['text']
                 print data['entities']['media'][0]['media_url_https']
                 print
+		# tweetを保存
+		co.insert_one({"name": data['user']['screen_name'],"tweet":data['text'],"imageurl":data['entities']['media'][0]['media_url_https']})
  
     except:
         #たまーにデリートフラグのついたツイートが流れてくるので（？）適当に受け流す 詳しくは未調査
