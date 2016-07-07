@@ -36,8 +36,8 @@ for r in res:
             if data['entities']['media'][0] is None:
                 pass
             else:
-                #print data['user']['screen_name']
-                #print data['text']
+                print data['user']['screen_name']
+                print data['text']
                 print data['entities']['media'][0]['media_url_https']
                 print
  
